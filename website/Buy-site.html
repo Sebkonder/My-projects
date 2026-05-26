@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kot-Shop - Cat z Glorpar</title>
+    <link rel="stylesheet" href="./bootstrap.min.css" />
+    <style>
+        .thumbnail-hover {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .thumbnail-hover:hover {
+            transform: scale(1.15) rotate(3deg);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2) !important;
+            z-index: 10;
+            position: relative;
+        }
+        .info-box {
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+    </style>
+  </head>
+  <body class="bg-light">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-12">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light rounded ">
+                    <div class="container-fluid">
+                        <a class="navbar-brand fw-bold text-primary" href="index.html">🐾 Kot-Shop</a>
+                        <button
+                            class="navbar-toggler"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#navbar-collapse-main"
+                            aria-controls="navbar-collapse-main"
+                            aria-expanded="false"
+                            aria-label="Toggle navigation"
+                        >
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbar-collapse-main">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#" aria-current="page">Sklep</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-danger fw-bold" href="#">Sale!</a>
+                                </li>
+                            </ul>
+                            <form class="d-flex w-50 mx-auto">
+                                <input
+                                    class="form-control me-2"
+                                    type="search"
+                                    placeholder="Śmieszny kotek..."
+                                    aria-label="Search"
+                                />
+                                <button class="btn btn-primary" type="submit">Szukaj</button>
+                            </form>
+                            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="Pomoc.html">Pomoc</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a
+                                        class="nav-link dropdown-toggle"
+                                        href="#"
+                                        role="button"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                    >
+                                        O Firmie!
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="#">Aktualności</a></li>
+                                        <li><a class="dropdown-item" href="#">Praca</a></li>
+                                        <li><a class="dropdown-item" href="#">Opinie</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+
+                <h1 class="text-center text-primary fw-bold mb-4">✨ Cat z Glorpar ✨</h1>
+
+                <div class="row mb-5 align-items-center bg-white p-4 rounded shadow-sm">
+                    <div class="col-12 col-md-5 text-center mb-4 mb-md-0">
+                        <img class="img-fluid rounded shadow mb-3 border border-3 border-primary" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkMJtURnuaAlX7BPUfj0yVuKa91TuDJjRg3g&s" alt="Cat2" />
+                        
+                        <div class="row g-2 justify-content-center">
+                            <div class="col-4">
+                                <img
+                                    class="img-fluid shadow-sm thumbnail-hover"
+                                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkMJtURnuaAlX7BPUfj0yVuKa91TuDJjRg3g&s"
+                                    alt="Cat2-1"
+                                />
+                            </div>
+                            <div class="col-4">
+                                <img
+                                    class="img-fluid shadow-sm thumbnail-hover"
+                                    src="https://i.redd.it/0v63i8jg9ore1.jpeg"
+                                    alt="Cat2-2"
+                                />
+                            </div>
+                            <div class="col-4">
+                                <img
+                                    class="img-fluid shadow-sm thumbnail-hover"
+                                    src="https://cdn2.cdnstep.com/dKFgCALydRqWYJdB1Y5O/7-2.png"
+                                    alt="Cat2-3"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-7 text-center text-md-start px-md-5">
+                        <h2 class="display-5 text-danger mb-4">
+                            Tylko <strong class="fw-bold text-success">14.99 zł</strong> <span class="fs-4 text-muted text-decoration-line-through">999.99 zł</span>
+                        </h2>
+                        
+                        <div class="d-grid gap-3 buy-btn-group col-md-8 mx-auto mx-md-0">
+                            <button class="btn btn-success btn-lg shadow-sm" type="button">
+                                Kup teraz!!!
+                            </button>
+                            <button class="btn btn-warning btn-lg shadow-sm text-dark" type="button">
+                                Kup na raty...
+                            </button>
+                            <button class="btn btn-secondary btn-lg shadow-sm disabled" type="button">
+                                Dodaj do koszyka...
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h3 class="fw-bold text-secondary text-center mb-4">👽 Akta Kosmity 👽</h3>
+                        <div class="row g-4">
+                            <div class="col-12 col-md-6">
+                                <div class="info-box h-100 border-start border-5 border-primary">
+                                    <h4 class="text-primary mb-3">O nim:</h4>
+                                    <p class="fs-5">
+                                        Kot z planety Glorpar, jedyny w swoim rodzaju! Spójrz na jego czułka! Spójrz na jego marsjańskie oczy! Potrafi się transformować pomiędzy jego formą Glorpiańską a Ziemską! Nie martwcie się, nie ma złych zamiarów (chyba...).
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="info-box h-100 border-start border-5 border-danger">
+                                    <h4 class="text-danger mb-3">Dane techniczne:</h4>
+                                    <dl class="row fs-5 mb-0">
+                                        <dt class="col-sm-6 text-truncate">Wiek?</dt>
+                                        <dd class="col-sm-6 fst-italic">Bib bop, gloripibob.</dd>
+                                        
+                                        <dt class="col-sm-6">Zainteresowania?</dt>
+                                        <dd class="col-sm-6 fst-italic">Blurp blorp, balingilop bup ali adrina kalip...</dd>
+                                        
+                                        <dt class="col-sm-6">Jakie masz zamiary wobec Ziemi?</dt>
+                                        <dd class="col-sm-6">Gloripi blub kalip <strong>destroy</strong> kaliblibib</dd>
+                                        
+                                        <dt class="col-sm-6">Czy chcesz coś dodać od siebie?</dt>
+                                        <dd class="col-sm-6 fst-italic fw-bold">Glorp!!!</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row border-top pt-4 mt-4 text-muted">
+            <div class="col-12 col-md-9 text-center text-md-start mb-3 mb-md-0">
+                <p class="mb-0">© 2026 Kot-Shop by Me. Wszelkie prawa i koty zastrzeżone.</p>
+            </div>
+            <div class="col-12 col-md-3 text-center text-md-end">
+                <address class="mb-0">
+                    <strong class="text-dark">Kot Corp.</strong><br />
+                    <span>Koci-mietka 12</span><br />
+                    <span>Radom</span><br />
+                    <abbr title="Phone">tel:</abbr> <span>67-420-69</span>
+                </address>
+            </div>
+        </div>
+    </div>
+    <script src="./bootstrap.bundle.min.js"></script>
+  </body>
+</html>

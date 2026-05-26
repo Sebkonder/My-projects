@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kot-Shop - Śmieszne kotki</title>
+    <meta name="description" content="Generated with Layoutit, Prettified for Fun" />
+    <link rel="stylesheet" href="./bootstrap.min.css" />
+<style>
+        .col-md-4 {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out;
+            border-radius: 15px;
+            padding: 15px; 
+        }
+
+        .col-md-4:hover {
+            transform: scale(1.05); 
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); 
+            background-color: #ffffff; 
+            z-index: 2;
+        }
+    </style>
+  </head>
+  <body class="bg-light">
+    <div class="container">
+      <div class="row mb-4">
+          <div class="col-12">
+              <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
+                  <div class="container-fluid">
+                      <a class="navbar-brand fw-bold text-primary" href="index.html">🐾 Kot-Shop</a>
+                      <button
+                          class="navbar-toggler"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#navbar-collapse-main"
+                          aria-controls="navbar-collapse-main"
+                          aria-expanded="false"
+                          aria-label="Toggle navigation"
+                      >
+                          <span class="navbar-toggler-icon"></span>
+                      </button>
+                      <div class="collapse navbar-collapse" id="navbar-collapse-main">
+                          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                              <li class="nav-item">
+                                  <a class="nav-link active" href="#" aria-current="page">Sklep</a>
+                              </li>
+                              <li class="nav-item">
+                                  <a class="nav-link text-danger fw-bold" href="#">Sale!</a>
+                              </li>
+                          </ul>
+                          <form class="d-flex w-50 mx-auto">
+                              <input
+                                  class="form-control me-2"
+                                  type="search"
+                                  placeholder="Śmieszny kotek..."
+                                  aria-label="Search"
+                              />
+                              <button class="btn btn-primary" type="submit">Szukaj</button>
+                          </form>
+                          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                              <li class="nav-item">
+                                  <a class="nav-link" href="Pomoc.html">Pomoc</a>
+                              </li>
+                              <li class="nav-item dropdown">
+                                  <a
+                                      class="nav-link dropdown-toggle"
+                                      href="#"
+                                      role="button"
+                                      data-bs-toggle="dropdown"
+                                      aria-expanded="false"
+                                  >
+                                      O Firmie!
+                                  </a>
+                                  <ul class="dropdown-menu dropdown-menu-end">
+                                      <li><a class="dropdown-item" href="#">Aktualności</a></li>
+                                      <li><a class="dropdown-item" href="#">Praca</a></li>
+                                      <li><a class="dropdown-item" href="#">Opinie</a></li>
+                                  </ul>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+              </nav>
+          </div>
+      </div>
+
+      <div class="row mb-5">
+          <div class="col-12">
+              <div class="carousel slide" data-bs-ride="carousel">   
+                  <div class="carousel-inner rounded shadow-sm">
+                      <div class="carousel-item active bg-dark">
+                          <img
+                              class="d-block w-100 opacity-75"
+                              src="img/Carouselle.png"
+                              alt="Carousel image"
+                              style="max-height: 300px; object-fit: cover;"
+                          />
+                          <div class="carousel-caption d-none d-md-block">
+                              <h3 class="fw-bold">Witaj na Kot-Shop</h3>
+                              <p class="fs-5">Sprzedajemy tylko śmieszne kotki</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div class="row">
+          <div class="col-12 col-md-3 mb-4">
+              <h5 class="text-start text-secondary mb-3">Wyszukiwarka Tagów</h5>     
+              <div class="input-group mb-4 shadow-sm">
+                  <input class="form-control" type="text" placeholder="Szukaj taga..." aria-label="Szukaj">
+                  <button class="btn btn-success" type="button">Szukaj</button>
+              </div>
+              <div class="d-flex flex-wrap gap-2 mb-4">
+                  <span class="badge rounded-pill text-bg-primary fs-6"><a href="cute.html" class="text-decoration-none text-dark">#Cute</a></span>
+                  <span class="badge rounded-pill text-bg-warning text-dark fs-6">#Funny</span>
+                  <span class="badge rounded-pill text-bg-info text-dark fs-6">#Milk</span>
+              </div>
+
+              <div class="mt-4">
+                  <div class="placeholder-glow mb-2">
+                      <span class="placeholder col-6 rounded"></span>
+                  </div>
+                  <div class="placeholder-wave">
+                      <span class="placeholder col-8 rounded"></span>
+                  </div>
+              </div>
+          </div>
+
+          <div class="col-12 col-md-9">
+              <h1 class="text-center text-primary mb-4 fw-bold">Sklep</h1>
+              
+              <div class="row mb-4">
+
+                  <div class="col-12 col-md-4 mb-4 mb-md-0">
+                      <div class="row align-items-center mb-2">
+                          <div class="col-4">
+                              <img class="img-fluid rounded shadow-sm" src="https://media.tenor.com/-QWKmyICTLcAAAAM/cuh-guh.gif" alt="Cat1" />
+                          </div>
+                          <div class="col-8">
+                              <p class="mb-0">Poruszający sie kotek, tylko <strong>9.99 zł</strong></p>
+                          </div>
+                      </div>
+                      <figure class="text-end border-top pt-2">
+                          <blockquote class="blockquote fs-6">
+                              <p>buhh??</p>
+                          </blockquote>
+                          <figcaption class="blockquote-footer">
+                              <span>"buh Cat"</span> w <cite title="Source Title">The way of buh</cite>
+                          </figcaption>
+                      </figure>
+                  </div>
+
+
+                  <a href="Buy-site.html" class="col-12 col-md-4 mb-4 mb-md-0 text-dark text-decoration-none d-block" style="cursor: pointer">
+
+                      <div class="row align-items-center mb-2">
+                          <div class="col-4">
+                              <img class="img-fluid rounded shadow-sm" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkMJtURnuaAlX7BPUfj0yVuKa91TuDJjRg3g&s" alt="Cat2" />
+                          </div>
+                          <div class="col-8">
+                              <p class="mb-0">Jedyna taka okazja, kot z kosmosu już teraz, tylko <strong>14.99 zł</strong></p>
+                          </div>
+                      </div>
+                      <figure class="text-end border-top pt-2">
+                          <blockquote class="blockquote fs-6">
+                              <p>Glorp glopity bop</p>
+                          </blockquote>
+                          <figcaption class="blockquote-footer">
+                              <span>"Cat from Glorpar"</span>
+                          </figcaption>
+                      </figure>
+                  </a>
+
+
+                  <div class="col-12 col-md-4 mb-4 mb-md-0">
+                      <div class="row align-items-center mb-2">
+                          <div class="col-4">
+                              <img class="img-fluid rounded shadow-sm" src="https://tr.rbxcdn.com/180DAY-c3764de262d5ffe220154a1fd670462a/420/420/FaceAccessory/Webp/noFilter" alt="Cat3" />
+                          </div>
+                          <div class="col-8">
+                              <p class="mb-0">Tego kota lepiej nie denerwować, tylko <strong>21.37 zł</strong></p>
+                          </div>
+                      </div>
+                      <figure class="text-end border-top pt-2">
+                          <blockquote class="blockquote fs-6">
+                              <p><b>Meow!!!</b></p>
+                          </blockquote>
+                          <figcaption class="blockquote-footer">
+                              <span>"Angry cat"</span> w <cite title="Source Title">The way of anger</cite>
+                          </figcaption>
+                      </figure>
+                  </div>
+              </div>
+
+              <div class="row mb-5">
+                  <div class="col-12 col-md-4 mb-4 mb-md-0">
+                      <div class="row align-items-center mb-2">
+                          <div class="col-4">
+                              <img class="img-fluid rounded shadow-sm" src="https://m.media-amazon.com/images/I/712tQUrusKL._AC_UF894,1000_QL80_.jpg" alt="Cat4" />
+                          </div>
+                          <div class="col-8">
+                              <p class="mb-0">Jego grzech to chciwość. Daj mu mleka i bądź szczęśliwy, <strong>12.33 zł</strong></p>
+                          </div>
+                      </div>
+                      <figure class="text-end border-top pt-2">
+                          <blockquote class="blockquote fs-6">
+                              <p>Meo-Milk-w</p>
+                          </blockquote>
+                          <figcaption class="blockquote-footer">
+                              <span>"Milky cat"</span> w <cite title="Source Title">The way of milk</cite>
+                          </figcaption>
+                      </figure>
+                  </div>
+
+                  <div class="col-12 col-md-4 mb-4 mb-md-0">
+                      <div class="row align-items-center mb-2">
+                          <div class="col-4">
+                              <img class="img-fluid rounded shadow-sm" src="https://preview.redd.it/random-question-but-does-anyone-have-versions-of-this-cat-v0-ya8qikz9kn0f1.png?auto=webp&s=c2fdba9a3904ab3bec9e7367e380f66343c2929a" alt="Cat5" />
+                          </div>
+                          <div class="col-8">
+                              <p class="mb-0">Poważny kot, on tylko cie sądzi, tylko <strong>4.55 zł</strong></p>
+                          </div>
+                      </div>
+                      <figure class="text-end border-top pt-2">
+                          <blockquote class="blockquote fs-6">
+                              <p>Meow meow meow...</p>
+                          </blockquote>
+                          <figcaption class="blockquote-footer">
+                              <span>"Judging cat"</span>
+                          </figcaption>
+                      </figure>
+                  </div>
+
+                  <div class="col-12 col-md-4 mb-4 mb-md-0">
+                      <div class="row align-items-center mb-2">
+                          <div class="col-4">
+                              <img class="img-fluid rounded shadow-sm" src="https://media.tenor.com/P1gzXH98ZqEAAAAM/pop-cat.gif" alt="Cat6" />
+                          </div>
+                          <div class="col-8">
+                              <p class="mb-0">Ten kot robi 'Pop'... dużo razy... Tylko <strong>42.01 zł</strong></p>
+                          </div>
+                      </div>
+                      <figure class="text-end border-top pt-2">
+                          <blockquote class="blockquote fs-6">
+                              <p>Pop pop pop pop...</p>
+                          </blockquote>
+                          <figcaption class="blockquote-footer">
+                              <span>"Popping cat"</span>
+                          </figcaption>
+                      </figure>
+                  </div>
+              </div>
+
+              <nav aria-label="Pagination" class="d-flex justify-content-center">
+                  <ul class="pagination pagination-md shadow-sm">
+                      <li class="page-item"><a class="page-link" href="#">Poprzednia</a></li>
+                      <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
+                      <li class="page-item"><a class="page-link" href="#">2</a></li>
+                      <li class="page-item"><a class="page-link" href="#">3</a></li>
+                      <li class="page-item"><a class="page-link" href="#">Następna</a></li>
+                  </ul>
+              </nav>
+          </div>
+      </div>
+
+      <div class="row border-top pt-4 mt-4 text-muted">
+          <div class="col-12 col-md-9 text-center text-md-start mb-3 mb-md-0">
+              <p class="mb-0">© 2026 Kot-Shop by Me. Wszelkie prawa i koty zastrzeżone.</p>
+          </div>
+          <div class="col-12 col-md-3 text-center text-md-end">
+              <address class="mb-0">
+                  <strong class="text-dark">Kot Corp.</strong><br />
+                  <span>Koci-mietka 12</span><br />
+                  <span>Radom</span><br />
+                  <abbr title="Phone">tel:</abbr> <span>67-420-69</span>
+              </address>
+          </div>
+      </div>
+    </div>
+    <script src="./bootstrap.bundle.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kot-Shop - Test Page</title>
+    <link rel="stylesheet" href="./bootstrap.min.css" />
+    <style>
+        .gif-hover {
+            border-radius: 20px;
+            transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            max-width: 100%;
+            height: auto;
+            border: 4px solid #fff;
+        }
+        .gif-hover:hover {
+            transform: scale(1.05) translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        .table-container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .emoji-cell {
+            font-size: 2.5rem;
+            transition: transform 0.2s ease-in-out;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .emoji-cell:hover {
+            transform: scale(1.4) rotate(10deg);
+        }
+    </style>
+  </head>
+  <body class="bg-light">
+    <div class="container">
+        <div class="row mb-4 pt-3">
+            <div class="col-12">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light rounded shadow-sm">
+                    <div class="container-fluid">
+                        <a class="navbar-brand fw-bold text-primary" href="index.html">🐾 Kot-Shop</a>
+                        <button
+                            class="navbar-toggler"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#navbar-collapse-main"
+                            aria-controls="navbar-collapse-main"
+                            aria-expanded="false"
+                            aria-label="Toggle navigation"
+                        >
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbar-collapse-main">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#" aria-current="page">Sklep</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-danger fw-bold" href="#">Sale!</a>
+                                </li>
+                            </ul>
+                            <form class="d-flex w-50 mx-auto">
+                                <input
+                                    class="form-control me-2"
+                                    type="search"
+                                    placeholder="Śmieszny kotek..."
+                                    aria-label="Search"
+                                />
+                                <button class="btn btn-primary" type="submit">Szukaj</button>
+                            </form>
+                            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="Pomoc.html">Pomoc</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a
+                                        class="nav-link dropdown-toggle"
+                                        href="#"
+                                        role="button"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                    >
+                                        O Firmie!
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="#">Aktualności</a></li>
+                                        <li><a class="dropdown-item" href="#">Praca</a></li>
+                                        <li><a class="dropdown-item" href="#">Opinie</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <div class="row mb-5 justify-content-center">
+            <div class="col-12 col-md-8 text-center">
+                <h2 class="text-primary fw-bold mb-4">✨ Strefa Śłodyczy ✨</h2>
+                <img 
+                    class="gif-hover" 
+                    src="https://i.pinimg.com/originals/85/be/94/85be94350b6cefd78140c8c8232c75e5.gif" 
+                    alt="Śmieszny testowy kotek"
+                >
+            </div>
+        </div>
+
+        <div class="row mb-5 justify-content-center">
+            <div class="col-12 col-md-8">
+                <h3 class="text-secondary text-center fw-bold mb-3">Słownik Kocio-Emotkowy</h3>
+                <div class="table-responsive shadow-sm table-container">
+                    <table class="table table-hover table-borderless align-middle text-center mb-0">
+                        <thead class="table-primary text-dark">
+                            <tr>
+                                <th>Emotka</th>
+                                <th>Znaczenie</th>
+                                <th>Poziom słodkości</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="emoji-cell">😻</span></td>
+                                <td class="fw-bold">Mrow!</td>
+                                <td class="text-danger fw-bold">10/10</td>
+                            </tr>
+                            <tr>
+                                <td><span class="emoji-cell">🙀</span></td>
+                                <td class="fw-bold">Gasp</td>
+                                <td class="text-warning fw-bold">8/10</td>
+                            </tr>
+                            <tr>
+                                <td><span class="emoji-cell">😼</span></td>
+                                <td class="fw-bold">Hmmmm</td>
+                                <td class="text-success fw-bold">9/10</td>
+                            </tr>
+                            <tr>
+                                <td><span class="emoji-cell">😹</span></td>
+                                <td class="fw-bold">Hehehe</td>
+                                <td class="text-primary fw-bold">10/10</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row border-top pt-4 mt-4 text-muted pb-4">
+            <div class="col-12 col-md-9 text-center text-md-start mb-3 mb-md-0">
+                <p class="mb-0">© 2026 Kot-Shop by Me. Wszelkie prawa i koty zastrzeżone.</p>
+            </div>
+            <div class="col-12 col-md-3 text-center text-md-end">
+                <address class="mb-0">
+                    <strong class="text-dark">Kot Corp.</strong><br />
+                    <span>Koci-mietka 12</span><br />
+                    <span>Radom</span><br />
+                    <abbr title="Phone">tel:</abbr> <span>67-420-69</span>
+                </address>
+            </div>
+        </div>
+    </div>
+    <script src="./bootstrap.bundle.min.js"></script>
+  </body>
+</html>
