@@ -34,7 +34,6 @@ fetches a web page, extracts a status field and appends it to a timestamped log,
 flagging when the value changes.
 
 ### `Dynamical Systems`
-
 Numerical exploration of how simple nonlinear maps transition from stable
 equilibria, through period-doubling, into chaos. The work combines fixed-point
 analysis, iteration, root-finding and bifurcation diagrams, applied to the
