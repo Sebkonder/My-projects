@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="dth=device-width, initial-scale=1.0">
+  <title>Particles</title>
+  <meta name="description" content="A generative particle field driven by iterated dynamics and a user-supplied scalar field.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300;1,9..144,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:          #0a0910;
+      --bg-panel:    #110d18;
+      --ink:         #e8e3d7;
+      --ink-muted:   #7a7280;
+      --ink-faint:   #39343f;
+      --line:        #1e1a26;
+      --line-hot:    #342e3f;
+      --amber:       #d4a574;
+      --amber-soft:  rgba(212, 165, 116, 0.18);
+      --red:         #c76c5e;
+
+      --mono:        'JetBrains Mono', 'SF Mono', Menlo, monospace;
+      --serif:       'Fraunces', 'Times New Roman', serif;
+
+      --label-size:  10px;
+      --label-track: 0.22em;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-weight: 400;
+      font-size: 13px;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+    }
+
+    /* ───── Stage ───── */
+
+    #canvas-stage {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 40% 55%,
+          rgba(0, 0, 0, 0.55) 0%,
+          var(--bg) 65%);
+    }
+    canvas { display: block; }
+
+    .masthead {
+      position: absolute;
+      top: 32px;
+      left: 36px;
+      z-index: 10;
+      pointer-events: none;
+      user-select: none;
+    }
+    .masthead .eyebrow {
+      display: block;
+      font-size: var(--label-size);
+      letter-spacing: var(--label-track);
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 6px;
+    }
+    .masthead h1 {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 300;
+      font-size: 46px;
+      line-height: 0.95;
+      letter-spacing: -0.015em;
+    }
+    .masthead h1 .amp {
+      color: var(--amber);
+      font-weight: 400;
+    }
+
+    .corner-mark {
+      position: absolute;
+      bottom: 28px;
+      left: 36px;
+      z-index: 10;
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      pointer-events: none;
+      user-select: none;
+    }
+    .corner-mark::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--amber);
+      border-radius: 50%;
+      margin-right: 10px;
+      vertical-align: middle;
+      box-shadow: 0 0 8px var(--amber-soft);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%      { opacity: 0.3; }
+    }
+
+    /* ───── Panel ───── */
+
+    aside.panel {
+      position: relative;
+      background: var(--bg-panel);
+      border-left: 1px solid var(--line);
+      padding: 72px 32px 32px 32px;
+      overflow-y: auto;
+    }
+    aside.panel::before {
+      content: '';
+      position: absolute;
+      top: 32px;
+      left: 32px;
+      right: 32px;
+      height: 1px;
+      background: var(--line);
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 300;
+      font-size: 18px;
+      letter-spacing: -0.01em;
+      margin-bottom: 20px;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--line);
+      margin: 4px 0 30px;
+    }
+
+    .field { margin-bottom: 26px; }
+    .field.is-disabled { opacity: 0.38; }
+
+    .field-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }
+
+    .field-label {
+      font-size: var(--label-size);
+      letter-spacing: var(--label-track);
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      font-weight: 500;
+    }
+
+    .readout {
+      font-size: 11px;
+      color: var(--amber);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Range ---------------------------------------------------------- */
+
+    input[type="range"] {
+      -webkit-appearance: none; appearance: none;
+      width: 100%; height: 20px;
+      background: transparent; cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-runnable-track {
+      height: 1px; background: var(--line-hot);
+    }
+    input[type="range"]::-moz-range-track {
+      height: 1px; background: var(--line-hot); border: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 2px; height: 10px; margin-top: -5px;
+      background: var(--amber); border-radius: 0;
+      transition: height 0.15s ease, margin-top 0.15s ease, box-shadow 0.15s ease;
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 2px; height: 10px; background: var(--amber);
+      border: none; border-radius: 0;
+    }
+    input[type="range"]:hover::-webkit-slider-thumb {
+      height: 16px; margin-top: -8px;
+      box-shadow: 0 0 8px var(--amber-soft);
+    }
+    input[type="range"]:focus { outline: none; }
+
+    /* Select --------------------------------------------------------- */
+
+    select {
+      -webkit-appearance: none; -moz-appearance: none; appearance: none;
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--line-hot);
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 13px;
+      padding: 8px 22px 8px 0;
+      cursor: pointer;
+      outline: none;
+      background-image:
+        linear-gradient(45deg, transparent 50%, var(--ink-muted) 50%),
+        linear-gradient(135deg, var(--ink-muted) 50%, transparent 50%);
+      background-position: calc(100% - 10px) 55%, calc(100% - 6px) 55%;
+      background-size: 4px 4px;
+      background-repeat: no-repeat;
+      transition: border-color 0.2s ease;
+    }
+    select:hover, select:focus { border-bottom-color: var(--amber); }
+    select option {
+      background: var(--bg-panel);
+      color: var(--ink);
+    }
+
+    /* Text ----------------------------------------------------------- */
+
+    .input-wrap { position: relative; }
+    input[type="text"] {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--line-hot);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 8px 24px 8px 0;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+    input[type="text"]:focus { border-bottom-color: var(--amber); }
+    .error-indicator {
+      position: absolute; right: 0; top: 50%;
+      transform: translateY(-50%);
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--red);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      pointer-events: none;
+    }
+    .error-indicator.is-visible { opacity: 1; }
+
+    /* Checkbox ------------------------------------------------------- */
+
+    .checkbox-row {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 12px;
+    }
+    input[type="checkbox"] {
+      -webkit-appearance: none; appearance: none;
+      flex-shrink: 0;
+      width: 14px; height: 14px;
+      border: 1px solid var(--line-hot);
+      background: transparent;
+      cursor: pointer;
+      position: relative;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    input[type="checkbox"]:hover { border-color: var(--amber); }
+    input[type="checkbox"]:checked {
+      background: var(--amber);
+      border-color: var(--amber);
+    }
+    input[type="checkbox"]:checked::after {
+      content: '';
+      position: absolute; left: 3px; top: 0;
+      width: 4px; height: 8px;
+      border: solid var(--bg);
+      border-width: 0 1.5px 1.5px 0;
+      transform: rotate(45deg);
+    }
+    .checkbox-row label { cursor: pointer; }
+
+    /* Color ---------------------------------------------------------- */
+
+    input[type="color"] {
+      -webkit-appearance: none; -moz-appearance: none; appearance: none;
+      background: transparent;
+      border: 1px solid var(--line-hot);
+      cursor: pointer;
+      width: 44px; height: 26px;
+      padding: 2px;
+      transition: border-color 0.2s ease;
+    }
+    input[type="color"]:hover { border-color: var(--amber); }
+    input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+    input[type="color"]::-webkit-color-swatch { border: none; }
+    input[type="color"]::-moz-color-swatch { border: none; }
+
+    /* Buttons -------------------------------------------------------- */
+
+    button {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: var(--label-track);
+      text-transform: uppercase;
+      background: transparent;
+      border: 1px solid var(--line-hot);
+      color: var(--ink-muted);
+      padding: 9px 14px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    button:hover {
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+    button.primary {
+      border-color: var(--amber);
+      color: var(--amber);
+      width: 100%;
+      margin-top: 4px;
+    }
+    button.primary:hover {
+      background: var(--amber);
+      color: var(--bg);
+    }
+    button:focus { outline: none; }
+
+    .preset-row {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-top: 12px;
+    }
+    .preset-row button {
+      padding: 6px 10px;
+      font-size: 9px;
+      letter-spacing: 0.15em;
+    }
+
+    .note {
+      font-size: 10px;
+      color: var(--ink-faint);
+      line-height: 1.65;
+      margin-top: 14px;
+      letter-spacing: 0.02em;
+    }
+    .note code {
+      color: var(--amber);
+      font-family: var(--mono);
+      background: transparent;
+    }
+
+    /* Scrollbar ------------------------------------------------------ */
+
+    aside.panel::-webkit-scrollbar { width: 6px; }
+    aside.panel::-webkit-scrollbar-track { background: transparent; }
+    aside.panel::-webkit-scrollbar-thumb { background: var(--line-hot); }
+    aside.panel::-webkit-scrollbar-thumb:hover { background: var(--ink-faint); }
+
+    /* Responsive ----------------------------------------------------- */
+
+    @media (max-width: 880px) {
+      html, body { overflow: auto; }
+      body {
+        grid-template-columns: 1fr;
+        height: auto; min-height: 100%;
+      }
+      #canvas-stage { height: 60vh; min-height: 420px; }
+      aside.panel { border-left: none; border-top: 1px solid var(--line); }
+      .masthead h1 { font-size: 34px; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Stage ------------------------------------------------------ -->
+  <div id="canvas-stage"></div>
+
+  <!-- Control panel --------------------------------------------- -->
+  <aside class="panel" aria-label="Parameter controls">
+    <div class="section-title">Dynamics</div>
+
+    <div class="field">
+      <div class="field-head">
+        <label class="field-label" for="alpha">Parameter &alpha;</label>
+        <span class="readout" id="alpha-readout">3.00</span>
+      </div>
+      <input type="range" id="alpha" min="-10" max="10" step="0.01" value="3">
+    </div>
+
+    <div class="field" id="fade-field">
+      <div class="checkbox-row">
+        <input type="checkbox" id="fade-enabled" checked>
+        <label class="field-label" for="fade-enabled">Background fade</label>
+      </div>
+      <div class="field-head">
+        <span class="field-label" style="color: var(--ink-faint)">opacity</span>
+        <span class="readout" id="fade-readout">10</span>
+      </div>
+      <input type="range" id="fade-amount" min="1" max="50" step="1" value="10">
+    </div>
+
+    <div class="field">
+      <div class="field-head">
+        <label class="field-label" for="fn-x">ƒ · x-axis</label>
+      </div>
+      <select id="fn-x">
+        <option value="sin">sin(v · &alpha;)</option>
+        <option value="cos">cos(v · &alpha;)</option>
+        <option value="tan">tan(v · &alpha;)</option>
+        <option value="atan">atan(v · &alpha;)</option>
+        <option value="square">v² · &alpha;</option>
+        <option value="linear">v · &alpha;</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <div class="field-head">
+        <label class="field-label" for="fn-y">ƒ · y-axis</label>
+      </div>
+      <select id="fn-y">
+        <option value="cos">cos(v · &alpha;)</option>
+        <option value="sin">sin(v · &alpha;)</option>
+        <option value="tan">tan(v · &alpha;)</option>
+        <option value="atan">atan(v · &alpha;)</option>
+        <option value="square">v² · &alpha;</option>
+        <option value="linear">v · &alpha;</option>
+      </select>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-title">Scalar field <em style="color: var(--ink-faint)">r(x, y)</em></div>
+
+    <div class="field">
+      <div class="input-wrap">
+        <input type="text" id="expression" value="1" spellcheck="false" autocomplete="off">
+        <div class="error-indicator" id="expr-error" title="parse error"></div>
+      </div>
+      <button type="button" id="apply" class="primary">apply expression</button>
+      <div class="preset-row">
+        <button type="button" data-preset="1">identity</button>
+        <button type="button" data-preset="9*(x+y-5)^2+(1-x-y)^2+5">polynomial</button>
+        <button type="button" data-preset="sin(x*y*10)">coupled trig</button>
+        <button type="button" data-preset="exp(-(x^2+y^2))">gaussian</button>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-title">Style</div>
+
+    <div class="field">
+      <div class="field-head">
+        <label class="field-label" for="color">Particle ink</label>
+      </div>
+      <input type="color" id="color" value="#e8e3d7">
+    </div>
+
+  </aside>
+
+  <!-- Dependencies -->
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjs@12.4.1/lib/browser/math.js"></script>
+  <script src="controls.js"></script>
+  <script src="sketch.js"></script>
+</body>
+</html>
