@@ -1,0 +1,217 @@
+---
+title: "Klasyfikacja"
+author: "Sebastian Dziuk"
+date: today
+lang: pl
+language: 
+  title-block-author-single: "Autor"
+  title-block-published: "Utworzono"
+format: 
+  html:
+    theme: 
+      light: flatly
+      dark: darkly
+    highlight-style: a11y
+    df-print: paged
+    toc: true
+    toc-depth: 4
+    code-fold: show
+    code-link: true
+    self-contained: true
+    code-tools: 
+      source: true
+editor: visual
+execute:
+  message: false
+  warning: false
+---
+
+## 
+
+### 1. Sebastian Dziuk
+
+### 2. Załaduj wszystkie pakiety, z których będziesz korzystać
+
+```{r}
+#| label: ładowanie potrzebnych pakietów
+
+library(tidymodels)
+library(tidyverse)
+library(modeldata)
+library(vip)
+```
+
+### 3. Klasyfikacja
+
+> Do tej analizy będziesz potrzebować zbioru danych `credit_data` z pakietu `modeldata`. Zapoznaj się z tym zbiorem, wyświetl tabelkę. Czy w zbiorze występują braki danych?
+
+```{r}
+credit_data
+```
+
+```{r}
+sum(is.na(credit_data))
+```
+
+- **Twoja odpowiedź: Istnieją i jest ich 455**
+
+##### Jakie etykiety występują w zmiennej `Status` i jakie są ich liczebności? (To będzie zmienna, którą będziemy przewidywać.)
+
+```{r}
+credit_data %>% count(Status)
+```
+
+##### Podziel dane na zbiór treningowy i testowy (70/30, z zachowaniem proporcji zmiennej przewidywanej) (ziarno losowania - numer Twojego indeksu)
+
+```{r}
+set.seed(345777)
+
+credit_split <- initial_split(credit_data, prop = 0.7, strata = Status)
+credit_train <- training(credit_split)
+credit_test <- testing(credit_split)
+```
+
+#### Modele
+
+##### Twoje zadanie polega na porównaniu kilku modeli klasyfikacyjnych z użyciem pakietu `tidymodels` (za jednych zamachem) i odpowiedzi na kilka pytań:
+
+- rozważ trzy różne "przepisy" (przygotuj dane do modelowania na 3 różne sposoby, wybór zmiennych i ich przygotowanie - według Twojego uznania)
+
+```{r}
+# Edytuj
+
+rec_0 <- recipe(Status ~ ., data = credit_train) 
+
+rec_1 <- rec_0 %>% 
+  step_impute_mode(Home, Marital)
+
+rec_2 <- rec_1 %>% 
+  step_normalize(all_numeric_predictors())
+
+```
+
+- rozważ modele: Random Forest (parametry domyślne, silnik: `ranger`), regresja logistyczna. Nazwij je odpowiednio: `model_rf` i `model_log`
+
+```{r}
+model_rf <- rand_forest() %>% 
+  set_engine("ranger", importance = 'permutation') %>% 
+  set_mode("classification")
+model_log <- logistic_reg() %>% 
+  set_engine("glm") %>% 
+  set_mode("classification")
+```
+
+- tym samym do wytrenowania i porównania będziesz mieć 6 modeli (3 przepisy \* 2 modele)
+
+- nie buduj modeli osobno - chodzi o to, żeby wytrenować i porównać je jednocześnie
+
+- trening i porównanie wykonaj z użyciem kroswalidacji na zbiorze treningowym
+
+```{r}
+#| label: podział na foldy
+
+credit_folds <- vfold_cv(credit_train, v = 5, strata = Status)
+
+modele <- workflow_set(
+    preproc = list(
+      nr0 = rec_0,
+      nr1 = rec_1,
+      nr2 = rec_2
+    ),
+    models = list(
+      reg_log = model_log,
+      drzewo = model_rf
+    ),
+    cross = TRUE
+  )
+```
+
+```{r}
+metrics <- modele %>%
+  workflow_map(
+    "fit_resamples",
+    resamples = credit_folds,
+    metrics = metric_set(accuracy, roc_auc, sensitivity, specificity),
+    verbose = TRUE
+  ) %>% 
+  collect_metrics()
+```
+
+- wyświetl tabelkę przedstawiającą wszystkie modele z wartościami metryk: dokładność, pole pod krzywą ROC, czułość i swoistość (upewnij się, że czułość i swoistość oznaczają to, co trzeba - ważniejsze jest dla nas wychwycenie osób, które nie powinny dostać kredytu)
+
+```{r}
+metrics
+```
+
+- **Twoja odpowiedź:**
+
+- Który model okazał się najlepszy pod względem dokładności? Czy pole pod krzywą ROC też wskazuje na ten model? Jak oceniasz czułość i swoistość dla tego modelu? (pamiętaj, że lasy losowe są losowe:) Zadbaj o to, żeby wynik był stabilny)
+
+```{r}
+
+metrics %>% filter(.metric == 'accuracy') %>% arrange(desc(mean))
+  
+```
+
+```{r}
+metrics %>% filter(.metric == 'roc_auc') %>% arrange(desc(mean))
+```
+
+```{r}
+metrics %>% filter(wflow_id == "nr1_reg_log")
+metrics %>% filter(wflow_id == "nr2_drzewo")
+```
+
+- **Twoja odpowiedź:** Najlepszy pod względem dokładności jest model `nr1_reg_log`. Pod względem auc to jest to model `nr2_drzewo`. Oba mają wysoką swoistość i niską czułość
+
+- wyznacz macierz pomyłek, dokładność i pole pod krzywą ROC dla najlepszego modelu na zbiorze testowym
+
+```{r}
+wk_fit_log <- workflow() %>% 
+  add_recipe(rec_1) %>% 
+  add_model(model_log) %>% 
+  fit(data = credit_train)
+
+credit_pred <- credit_test %>% 
+  select(Status) %>% 
+  mutate(predict(wk_fit_log, new_data = credit_test))
+
+credit_pred %>% 
+  conf_mat(truth = Status, estimate = .pred_class)
+```
+
+```{r}
+credit_pred %>% 
+  yardstick::accuracy(truth = Status, estimate = .pred_class)
+```
+
+```{r}
+credit_pred_1 <- credit_pred %>% 
+  mutate(Status = factor(Status, levels = c("good", "bad")))
+credit_pred_1 <- augment(wk_fit_log, new_data = credit_test)
+
+credit_pred_1 %>% roc_auc(truth = Status, .pred_bad)
+```
+
+- rozważ najlepszy spośród modeli Random Forest i najlepszy spośród modeli regresji logistycznej. Czy oba modele wskazują na te same zmienne, jako zmienne najbardziej wpływowe w procesie klasyfikacji? Które ze zmiennych zostały uznane za najważniejsze przez dany model. Wykonaj wykresy informujące o ważności zmiennych dla poszczególnych modeli. Czy oba modele "widzą" to tak samo? (przydatne funkcje: `extract_...`, `vip`)
+
+```{r}
+wk_fit_drzewo <- workflow() %>% 
+  add_model(model_rf) %>% 
+  add_recipe(rec_2) %>% 
+  fit(data = credit_train)
+```
+
+```{r}
+vip(wk_fit_log %>% 
+      extract_fit_engine()) +
+  theme_minimal()
+```
+
+```{r}
+vip(wk_fit_drzewo %>% 
+      extract_fit_engine()) +
+  theme_minimal()
+```
+
+- **Twoja odpowiedź: Oba modele wskazują na te samą zmienna, jest to zmienna 'Records'.**
