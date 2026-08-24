@@ -26,7 +26,7 @@ execute:
   warning: false
 ---
 
-### 1. Sebastian Dziuk
+### 1. Sebastian
 
 ### 2. Załaduj pakiety, z których będziesz korzystać
 
