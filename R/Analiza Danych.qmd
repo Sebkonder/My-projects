@@ -1,0 +1,165 @@
+---
+title: "Projekt R: Analiza danych"
+author: "Sebastian"
+date: today
+# date: 07 01 2025
+lang: pl
+language: 
+  title-block-author-single: "Autor"
+  title-block-published: "Utworzono"
+format: 
+  html:
+    theme: 
+      light: flatly
+      dark: darkly
+    highlight-style: arrow
+    df-print: paged
+    toc: true
+    toc-depth: 4
+    code-fold: show
+    code-link: true
+    self-contained: true
+    code-tools: 
+      source: true
+# editor: visual
+execute:
+  message: false
+  warning: false
+---
+
+# Importy
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+```
+
+# Zestaw danych Movies
+
+Do projektu użyjemy zestawu danych ze strony internetowej *Kaggle* o nazwie *Movies*. Zaczniemy od zaimportowania naszych dancyh
+
+```{r}
+movies <- read_csv("movies.csv")
+```
+
+## Wizualizacja bazy danych
+
+```{r}
+movies %>% 
+  glimpse()
+```
+
+Jak widzimy nasza tabela posiada 7.668 wierszy i 15 kolumn. Widzimy też, że nazwy poszczególnych kolumn to: `r movies %>% names()`.
+
+Spójrzmy na naszą tabelę w osobnym *chunku*
+
+```{r}
+movies %>% 
+  tibble()
+```
+
+Przed przejściem do zapytań, dobrze by było wyczyścić dane z pozycji które są nieznane. Jak się okazuje ponad 2000 pozycji jest nieznanych dla kolumny `budget`. Na ten moment usuniemy tylko te pozycje które są nieznane dla `runtime`, `score` i `votes`
+
+```{r}
+movies <- movies %>% 
+  drop_na(runtime, score, votes)
+```
+
+Z ciekawości i dla sprawdzenia naszych danych użyjemy dodatkowo funkcji `summary`
+
+```{r}
+movies %>% summary()
+```
+
+## Zapytania
+
+#### Zapytanie 1
+
+Chcemy znaleźć najdłużej trwający film, tak żeby nasza tabela pokazywała nam jego tytuł, długość trwania oraz studio produkcji oraz kraj wyprodukowania
+
+```{r}
+movies %>% 
+  filter(runtime == max(runtime, na.rm = TRUE)) %>% 
+  select(
+    Tytuł = name, 
+    "Czas trwania" = runtime, 
+    Studio = company, 
+    Kraj = country
+    )
+  
+```
+
+#### Zapytanie 2
+
+Jako drugie pytanie chcemy jaki jest najlepszy film (jaki jest najwyżej oceniany film) względem danego gatunku. Chcemy w naszej tabeli widzieć gatunek, tytuł i jego ocenę
+
+```{r}
+movies %>% 
+  select(
+    Tytuł = name, 
+    Gatunek = genre, 
+    Ocena = score
+    ) %>% 
+  group_by(Gatunek) %>% 
+  slice_max(Ocena, n = 1) %>% 
+  arrange(desc(Tytuł)) %>% 
+  tibble()
+```
+
+#### Zapytanie 3
+
+Jako trzecie pytanie, pytamy jakie jest pierwszę 5 najlepszych (najlepiej ocenianych) filmów od studia Walt'a Disney'a
+
+```{r}
+movies %>% 
+  filter(str_detect(company, 'Walt '), genre == 'Animation') %>% 
+  slice_max(score, n = 5)
+```
+
+## Wykresy
+
+#### Wykres 1
+
+Jako wykres pierwszy stworzymy histogram obrazujący rozkład ilości filmów względem długości. Jak wiemy większość filmów jest długości 1 godziny i 30 minut. Spójrzmy, czy wykres odzwierciedla rzeczywistość
+
+```{r}
+movies %>% 
+  ggplot() +
+  geom_histogram(aes(runtime/60), color = "grey30", bins = 50, fill = "black") +
+  scale_x_continuous(breaks = seq(1, 5, by = 0.5))+
+  scale_y_continuous(expand = c(0,0)) +
+  labs(x = "Czas trwania", y = "Ilość", title = "Histogram") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 17, face = "bold"))
+```
+
+Istotnie, najwięcej filmów jest długości 1.5 godziny (1 godziny i 30 minut).
+
+#### Wykres 2
+
+Jako drugi wykres, użyjemy *Box-plot* (wykres skrzynkowy) która przedstawia rozkład danych. Będziemy badać jaki jest rozkład ocen względem poszczególnego gatunku
+
+```{r}
+movies %>% 
+  ggplot() +
+  aes(x = genre, y = score, fill = genre) +
+  geom_boxplot() +
+  coord_flip() + 
+  labs(x = "Gatunek", y = "Ocena") +
+  theme(legend.position = "none")
+```
+
+#### Wykres 3
+
+Wykres trzeci spróbuje odpowiedzieć nam na pytanie, czy budżet wpływa na ocenę filmu. Czy przeznaczanie wysokich kosztów na produkcje filmów powoduje że widownia odbiera te filmy pozytywnie. Jak pamiętamy, w naszym zestawie danych ponad 2000 pozycji ma nieznany budżet, więc przed przystąpieniem do tworzenia wykresu, usuniemy te pozycje
+
+```{r}
+movies %>% 
+  drop_na(budget) %>% 
+  ggplot(aes(x = budget, y = score)) +
+  geom_point(alpha = 0.5, color = "blue") + 
+  geom_smooth(method = "lm", color = "red") +
+  labs(x = "Budżet", y = "Ocena")
+```
+
+Jak widzimy, tendencja jest wzrostowa, to znaczy że rzeczywiście, przeznacznie wysokich kosztów na film jest na ogół wyżej oceniany.
