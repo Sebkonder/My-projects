@@ -84,7 +84,7 @@ The notebooks open directly in Jupyter or Google Colab.
 
 ```bash
 pip install requests beautifulsoup4
-python web_scraping/ao3_status_checker.py
+python ao3_status_checker.py
 ```
 
 ### For the dynamical system
