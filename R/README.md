@@ -65,3 +65,4 @@ To read the completed analyses, download the `.html` files and open them in a we
 
 To edit or rerun an analysis, open its `.qmd` file in an environment with **R** and **Quarto**, install the packages listed at the beginning of the document, and render it. 
 
+The `movies.csf` dataset was downloaded from Kaggle website. The image that the `Clustering` file references was downloaded from internet.
