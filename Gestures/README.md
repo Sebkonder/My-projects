@@ -27,8 +27,6 @@
 
 A hand gesture recognition application developed as a university team project, using OpenCV for webcam image processing and Tkinter for the desktop interface.
 
-![Application interface](./ssapka.png)
-
 * A - Camera view.
 * B - The area where hand gestures are detected.
 * C - Text describing the current gesture. Supported gestures: rock, paper, scissors, pointing, and waving.
